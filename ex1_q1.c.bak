@@ -1,0 +1,227 @@
+
+
+
+#include "ex1_q1.h"
+
+
+
+
+studentsList* initList() {
+	
+	
+				printf("inside %s, initList\n");
+		
+	studentsList* stdList = (studentsList*)malloc(sizeof(studentsList));
+	
+	stdList->next = NULL;
+	stdList->head = NULL;
+	
+	return stdList;
+
+}
+
+student*  getStudent(char* studentName, studentsList* list ){
+	
+	
+			printf("inside %s, getStudent\n");
+	
+	listNode* current = list->head;
+	
+	while(current != NULL) {
+		
+		if(!(strcmp(studentName, current->stdnt->name)))
+		{
+			
+			return current->stdnt;
+		
+		}
+	
+		current = current->next;
+	
+	}
+	
+	return NULL;
+}
+
+int checkIfStudentExists(char* studentName, studentsList* list ){
+	
+	
+		printf("inside %s, checkIfStudentExists\n");
+	
+	
+	listNode* current = list->head;
+	
+	while(current != NULL) {
+		
+		if(!(strcmp(studentName, current->stdnt->name)))
+		{
+			
+			return 1;
+		
+		}
+	
+		current = current->next;
+	
+	}
+	
+	return 0;
+}
+
+
+
+student* addNewStudentToList(studentsList* studentsList, char* studentName) {
+	
+	printf("inside %s, addNewStudentToList\n");
+	
+	listNode* stdntNode = (listNode*)malloc(sizeof(listNode)); 
+	student* stdnt = (student*)malloc(sizeof(student));
+	//line 75 is in question;
+	
+	strcpy(stdnt->name , studentName);	
+	
+}
+
+
+
+
+void addGrade(int gradesArr[], int gradeToAdd, int index) {
+	
+	
+	
+	printf("inside addGrade. grade is: %d at index: %d\n", gradeToAdd, index);
+	gradesArr[index] = gradeToAdd;
+	
+	
+	
+	
+}
+
+void handleRow(char* buffer, studentsList* stdntList) {
+	
+	printf("inside %s, handleRow\n");
+	
+	const char delimiter[2] = " ";
+	
+	//now we will use strtok
+	
+	char* token = strtok(buffer, delimiter);
+	char* studentName;
+	
+	student* stdnt;
+	int i = 0;
+	
+	while(token != NULL) 
+	{
+		
+		
+		
+			printf("token : %s\n", token);
+		
+			if(i == 0) 
+			{
+			
+		
+				studentName = token;
+				if(checkIfStudentExists(studentName, stdntList)) {
+				
+				
+						stdnt = getStudent(studentName, stdntList);
+						
+				
+				}
+	
+				else {
+					
+					stdnt = addNewStudentToList(stdntList, studentName);
+				}
+
+	
+			}
+	
+		
+			else 
+			{
+			
+			
+				
+				// add grade to grades arr;
+				int grade = atoi(token);
+				printf("grade is: %d\n", grade);
+					addGrade(stdnt->grades, grade, stdnt->numOfGrades);
+					stdnt->numOfGrades++;
+		
+			
+			}
+		
+			token = strtok(NULL, delimiter);
+			i++;
+		}
+	
+	
+}
+
+void handleFile(char* fileName, studentsList* StudentsList) {
+	
+	printf("inside %s, handlefile\n");
+	printf("file name is: %s\n",fileName);
+	FILE* filePointer = fopen(fileName, "r");
+	 char buffer[256];
+	int size = sizeof(buffer);
+	int size  = 256;	
+	int i = 1;
+	
+      do {
+		//close the file at the end
+		
+		
+		int numOfByets  =  getline(&buffer, &size, filePointer);
+		printf("numOfByets =  %d\n", numOfByets);
+		printf("line from the file: %s\n", buffer);
+		
+		
+		if(numOfByets > 0) {
+				
+				
+		handleRow(buffer, StudentsList);
+			 
+		}
+		
+		
+		
+		printf("%d iteration in handleFile\n", i);
+		
+		}while(buffer != -1) ;
+
+	
+	
+	fclose(filePointer);
+	
+	
+}
+
+
+
+
+int main(int argc, char* argv[]) 
+{
+
+
+studentsList* SudentsList = initList();
+
+
+for(int i =1; i < argc; i++){
+	
+	printf("the number of arguments: %d\n", argc);
+	printf("%s\n", argv[i]);
+	handleFile(argv[i], SudentsList);
+	
+	
+	
+}
+
+
+
+free(SudentsList);
+
+
+};
