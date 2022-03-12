@@ -5,11 +5,10 @@
 
 
 
-
 studentsList* initList() {
 	
 	
-				printf("inside initList\n");
+				//rr printf("inside initList\n");
 		
 	studentsList* stdList = (studentsList*)malloc(sizeof(studentsList));
 	
@@ -18,7 +17,7 @@ studentsList* initList() {
 	
 	
 	
-	printf("exiting initList\n");
+	 //rr printf("exiting initList\n");
 	
 	return stdList;
 
@@ -27,7 +26,7 @@ studentsList* initList() {
 student*  getStudent(char* studentName, studentsList* list ){
 	
 	
-			printf("inside getStudent\n");
+		//rr	printf("inside getStudent\n");
 	
 	listNode* current = list->head;
 	
@@ -44,7 +43,7 @@ student*  getStudent(char* studentName, studentsList* list ){
 	
 	}
 	
-	printf("exiting getStudent\n");
+	//rr	printf("exiting getStudent\n");
 	
 	return NULL;
 }
@@ -52,7 +51,7 @@ student*  getStudent(char* studentName, studentsList* list ){
 int checkIfStudentExists(char* studentName, studentsList* list ){
 	
 	
-		printf("inside checkIfStudentExists\n");
+	//rr	printf("inside checkIfStudentExists\n");
 	
 	
 	listNode* current = list->head;
@@ -60,7 +59,7 @@ int checkIfStudentExists(char* studentName, studentsList* list ){
 	while(current != NULL) {
 		
 		
-		printf("%s\n", current->stdnt->name);
+	//rr	printf("%s\n", current->stdnt->name);
 		
 		if((strcmp(studentName, current->stdnt->name)) == 0)
 		{
@@ -74,7 +73,7 @@ int checkIfStudentExists(char* studentName, studentsList* list ){
 	}
 	
 	
-		printf("exiting checkIfStudentExists\n");
+	//rr	printf("exiting checkIfStudentExists\n");
 	
 	return 0;
 }
@@ -84,10 +83,13 @@ int checkIfStudentExists(char* studentName, studentsList* list ){
 void insertNodeToTail(studentsList* studentsList, listNode* stdntNode){
 
 		
-		printf("inside insertNodeToTail\n");
+	//rr	printf("inside insertNodeToTail\n");
 
 	if(studentsList->tail == NULL)
 	{
+	
+	//	printf("inserting %s to head of list\n", stdntNode->stdnt->name);
+		
 		studentsList->tail = studentsList->head = stdntNode;
 	
 	
@@ -95,6 +97,7 @@ void insertNodeToTail(studentsList* studentsList, listNode* stdntNode){
 	
 	else{
 	
+	//rr	printf("inserting %s to tail of list\n", stdntNode->stdnt->name);	
 		studentsList->tail->next = stdntNode;
 
 
@@ -106,12 +109,12 @@ void insertNodeToTail(studentsList* studentsList, listNode* stdntNode){
 
 	studentsList->tail->next = NULL;
 
-	printf("exiting insertNodeToTail\n");
+	//rr printf("exiting insertNodeToTail\n");
 }
 
 student* addNewStudentToList(studentsList* studentsList, char* studentName) {
 	
-	printf("inside %s, addNewStudentToList\n");
+	//rr printf("inside addNewStudentToList\n");
 	
 	listNode* stdntNode = (listNode*)malloc(sizeof(listNode)); 
 	student* newstdnt = (student*)malloc(sizeof(student));
@@ -121,9 +124,9 @@ student* addNewStudentToList(studentsList* studentsList, char* studentName) {
 	
 	insertNodeToTail(studentsList, stdntNode);
 	
-	printf("student name: %s\n", stdntNode->stdnt->name);
+	//rr printf("student name: %s was added to the list\n", stdntNode->stdnt->name);
 	
-	printf("exiting addNewStudentToList\n");
+	//rr printf("exiting addNewStudentToList\n");
 	
 
 	return stdntNode->stdnt;
@@ -137,18 +140,20 @@ void addGrade(int gradesArr[], int gradeToAdd, int index) {
 	
 	
 	
-	printf("inside addGrade. grade is: %d at index: %d\n", gradeToAdd, index);
+	//rr printf("inside addGrade. grade is: %d at index: %d\n", gradeToAdd, index);
 	gradesArr[index] = gradeToAdd;
 	
 	
-	printf("exiting addGrade\n");
+	//rr printf("exiting addGrade\n");
 	
 	
 }
 
-void handleRow(char* buffer, studentsList* stdntList) {
+int handleRow(char* buffer, studentsList* stdntList) {
 	
-	printf("inside handleRow\n");
+	
+	int num_stud = 0;
+	//rr printf("inside handleRow\n");
 	
 	const char delimiter[2] = " ";
 	
@@ -165,7 +170,7 @@ void handleRow(char* buffer, studentsList* stdntList) {
 		
 		
 		
-			printf("token : %s\n", token);
+			//rr printf("token: %s\n", token);
 		
 			if(i == 0) 
 			{
@@ -183,9 +188,13 @@ void handleRow(char* buffer, studentsList* stdntList) {
 				else {
 					
 					stdnt = addNewStudentToList(stdntList, studentName);
+					
 				}
 
-	
+			//TODO: check if a name can apear twice in a file
+		
+			num_stud++;
+			
 			}
 	
 		
@@ -198,12 +207,14 @@ void handleRow(char* buffer, studentsList* stdntList) {
 				
 				// add grade to grades arr;
 				int grade = atoi(token);
-				printf("grade is: %d\n", grade);
+			//rr	printf("grade is: %d\n", grade);
 					
 					
 					addGrade(stdnt->grades, grade, stdnt->numOfGrades);
 					stdnt->numOfGrades++;
 		
+			
+			
 			
 			}
 		
@@ -211,15 +222,20 @@ void handleRow(char* buffer, studentsList* stdntList) {
 		
 			token = strtok(NULL, delimiter);
 			i++;
+	
+	
 		}
 	
-	printf("exiting handleRow\n");
+	//rr printf("exiting handleRow\n");
+	return num_stud;
 }
 
-void handleFile(char* fileName, studentsList* StudentsList) {
+int handleFile(char* fileName, studentsList* StudentsList) {
 	
-	printf("inside handlefile\n");
-	printf("file name is: %s\n",fileName);
+	
+	int num_students = 0;
+	//rr printf("inside handlefile\n");
+	//rr printf("file name is: %s\n",fileName);
 	FILE* filePointer = fopen(fileName, "r");
 	
 	
@@ -231,7 +247,7 @@ void handleFile(char* fileName, studentsList* StudentsList) {
 	
 	int lineSize = getline(&buffer, &size, filePointer);
 	
-	printf("line size : %d\n", lineSize);
+	//rr printf("line size : %d\n", lineSize);
 	
      
      	while(lineSize >= 0) 
@@ -241,19 +257,20 @@ void handleFile(char* fileName, studentsList* StudentsList) {
 		
 		
 		
-		printf("line from the file: %s\n", buffer);
+	//	rr printf("line from the file: %s\n", buffer);
 		
 		
-		if(lineSize > 0) { // could be an empty line;
+		if(lineSize > 2) { // could be an empty line;
 				
 				
-		handleRow(buffer, StudentsList);
+		num_students += handleRow(buffer, StudentsList);
 			 
 		}
 		
 		
 		
-		printf("%d iteration in handleFile\n", i);
+	//	rr printf("%d iteration in handleFile\n", i);
+		
 		lineSize = getline(&buffer, &size, filePointer);
 		
 	}
@@ -261,8 +278,10 @@ void handleFile(char* fileName, studentsList* StudentsList) {
 	
 	
 	fclose(filePointer);
+	buffer = NULL;
 	
-	printf("exiting handleFile\n");
+	//rr printf("exiting handleFile\n");
+	return num_students;
 }
 
 
@@ -272,7 +291,7 @@ void calcAverage(studentsList* StudentsList) {
 
 
 
-	printf("inside calcAverage\n");
+	//rr printf("inside calcAverage\n");
 
 	listNode* curr = StudentsList->head;
 	student* tempStud;
@@ -300,12 +319,33 @@ void calcAverage(studentsList* StudentsList) {
 	}
 
 
-	printf("exiting calcAverage\n");
+	//rr printf("exiting calcAverage\n");
 	
 	
 	
 
 }
+
+
+
+void print_all_avg(studentsList* studList){
+listNode* curr = studList->head;
+int num_of_students=0;
+int sum_of_grades=0;
+int num_of_all_grades = 0;
+while(curr!=NULL){
+num_of_students++;
+num_of_all_grades+= curr->stdnt->numOfGrades;
+sum_of_grades+=(curr->stdnt->average)*(curr->stdnt->numOfGrades);
+curr = curr->next;
+}
+report_data_summary(num_of_students, (double) sum_of_grades/num_of_all_grades);
+}
+
+
+
+
+
 
 
 
@@ -316,18 +356,97 @@ listNode* currentStudent=studentList->head;
 int i = 1;
 
 while(currentStudent!=NULL){
-printf("student number %d, name: %s\nstudent grades: ",i, currentStudent->stdnt->name);
+printf("%s",currentStudent->stdnt->name);
 for(int i=0;i<currentStudent->stdnt->numOfGrades;i++){
 printf(" %d ",currentStudent->stdnt->grades[i]);
 
-
 }
 
-printf("\naverage: %lf\n",currentStudent->stdnt->average);
 currentStudent=currentStudent->next;
 i++;
 
+printf("\n");
 }
+
+
+}
+
+
+
+
+void report_input_file(const char* file_name, int num_stud)
+{
+ fprintf(stderr, "process: %d file: %s number of students: %d\n",
+ getpid(), file_name, num_stud);
+}
+//-----------------------------------------------
+void report_data_summary(int num_stud, double avg)
+{
+ fprintf(stderr, "process: %d data summary - number of students:"
+ " %d grade average: %.2f\n",
+getpid(), num_stud, avg);
+}
+
+
+
+void sort_grades(studentsList* student_list) {
+
+
+	
+	listNode* curr = student_list->head;
+	student* tmp_student;
+	
+	while(curr != NULL) {
+	
+	tmp_student = curr->stdnt;
+	
+	
+	qsort(tmp_student->grades, tmp_student->numOfGrades, sizeof(int), cmpfunc);
+		
+		curr = curr->next;
+			
+	}
+	
+
+
+
+
+}
+
+
+
+int cmpfunc (const void * a, const void * b) {
+   return ( *(int*)b - *(int*)a );
+}
+
+
+
+
+void write_to_file(studentsList* SudentsList) {
+
+	FILE* merged_file = fopen("merged.txt","w");
+	dup2(stdout,merged_file);
+	listNode* currentStudent=SudentsList->head;
+	int i = 1;
+
+	while(currentStudent!=NULL){
+	fprintf(merged_file,"%s",currentStudent->stdnt->name);
+	for(int i=0;i<currentStudent->stdnt->numOfGrades;i++){
+	fprintf(merged_file," %d ",currentStudent->stdnt->grades[i]);
+
+
+
+}
+
+currentStudent=currentStudent->next;
+i++;
+
+fprintf(merged_file,"\n");
+}
+
+
+fclose(merged_file);
+
 
 
 }
@@ -342,19 +461,27 @@ studentsList* SudentsList = initList();
 
 for(int i =1; i < argc; i++){
 	
-	printf("the number of arguments: %d\n", argc);
-	printf("%s\n", argv[i]);
-	handleFile(argv[i], SudentsList);
+	//printf("the number of arguments: %d\n", argc);
+	//printf("%s\n", argv[i]);
 	
 	
+	
+int num_students = handleFile(argv[i], SudentsList);
+
+	report_input_file(argv[i],num_students);
 	
 }
 
 
-	calcAverage(SudentsList);
+	sort_grades(SudentsList);
+	calcAverage(SudentsList);	
+	//printList(SudentsList);
 	
-	printList(SudentsList);
+	print_all_avg(SudentsList);
 	
+
+	write_to_file(SudentsList);
+
 
 
 //TODO

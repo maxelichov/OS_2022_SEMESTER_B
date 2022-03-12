@@ -15,11 +15,11 @@ ex1_q1.o:       ex1_q1.c        ex1_q1.h
 	$(CC) $(CFLAGS) ex1_q1.c -lm
 
 clean:
-	rm -vf *.o ${PROG} *.log
+	rm -vf *.o ${PROG} *.log *merged
 
 test:
 	@echo going to run test...
-	./${PROG} < grades_1.txt > out.log
+	./${PROG} grades_1.txt grades_2.txt
 
 	
 	
