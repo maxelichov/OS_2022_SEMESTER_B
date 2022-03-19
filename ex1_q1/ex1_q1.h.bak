@@ -1,0 +1,47 @@
+
+
+
+
+
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+#define MAX_ROW_SIZE 80
+
+
+typedef struct Student {
+	
+	
+	char name[10];
+	int average;
+	int numOfGrades;
+	int grades[10];
+	
+	
+}student;
+
+
+typedef struct ListNode {
+	
+	
+	struct ListNode* next;
+	student* stdnt;
+	
+}listNode;
+
+typedef struct StudentsList {
+	
+	listNode*	head;	
+	listNode* next;
+	
+	
+}studentsList;
+
+studentsList* initList();
+student*  getStudent(char* studentName, studentsList* list );
+int checkIfStudentExists(char* studentName, studentsList* list );
+student* addNewStudentToList(studentList* StudentsList, char* studentName) ;
+void addGrade(int gradesArr[], int gardeToAdd, int index);
+void handleRow(char* buffer, studentsList* stdntList);
+void handleFile(char* fileName, SudentsList* studentsList);

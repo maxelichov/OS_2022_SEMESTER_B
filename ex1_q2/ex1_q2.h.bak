@@ -1,0 +1,66 @@
+
+
+
+
+
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#define MAX_ROW_SIZE 80
+#define rr "//"
+#define STDOUT 1
+
+
+ 
+ 
+
+typedef struct Student {
+	
+	
+	char name[10];
+	float average;
+	int numOfGrades;
+	int grades[10];
+	
+	
+}student;
+
+
+typedef struct ListNode {
+	
+	
+	struct ListNode* next;
+	student* stdnt;
+	
+}listNode;
+
+typedef struct StudentsList {
+	
+	listNode*	head;	
+	listNode*	tail;
+	listNode* next;
+	
+	
+}studentsList;
+
+
+void insert_to_tail(studentsList* studentsList, listNode* stdntNode);
+int read_and_write(char* inputFile,char* writeFile, int child, studentsList* SudentsList);
+void free_list(studentsList* SudentsList);
+void write_to_file(char* writeFile, int child, studentsList* SudentsList);
+void print_all_avg(studentsList* studList);
+void report_input_file(const char* file_name, int num_stud);
+void report_data_summary(int num_stud, double avg);
+int cmpfunc (const void * a, const void * b);
+//void qsort(void *base, size_t nitems, size_t size, int (*compar)(const void *, const void*));
+void calc_avg(studentsList* StudentsList);
+void print_list(studentsList* studentList);
+studentsList* init_list();
+student*  get_student(char* studentName, studentsList* list );
+int is_student_exist(char* studentName, studentsList* list );
+student* add_to_list(studentsList* StudentsList, char* studentName) ;
+void add_grade(int gradesArr[], int gardeToAdd, int index);
+int handle_row(char* buffer, studentsList* stdntList);
+int handle_file(char* fileName, studentsList* studentsList);
